@@ -22,9 +22,35 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
         hideLoader();
-        this.router.navigate(['/users'])
+        this.router.navigate(['/users']);
       },
       error: (err: { error: { message: any } }) => alert(err.error.message),
     });
+  }
+
+  protected togglePasswordVisibility() {
+    const passwordInput = document.getElementById(
+      'password'
+    ) as HTMLInputElement;
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+    } else {
+      passwordInput.type = 'password';
+    }
+
+    this.switchIcon();
+  }
+
+  protected switchIcon() {
+    const icon = document.getElementById('icon');
+    if (icon) {
+      if (icon.classList.contains('bi-eye-fill')) {
+        icon.classList.remove('bi-eye-fill');
+        icon.classList.add('bi-eye-slash-fill');
+      } else {
+        icon.classList.remove('bi-eye-slash-fill');
+        icon.classList.add('bi-eye-fill');
+      }
+    }
   }
 }
