@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../../enviroments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http
-      .post<{ token: string }>('http://localhost:8000/login', {
+      .post<{ token: string }>(environment.apiUrl + 'users', {
         email,
         password,
       })

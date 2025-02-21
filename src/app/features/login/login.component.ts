@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoaderService } from '../../core/services/loader.service';
 import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../enviroments/environment';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private http: HttpClient
   ) {}
 
   onSubmit() {
