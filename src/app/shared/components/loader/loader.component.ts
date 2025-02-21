@@ -1,12 +1,14 @@
+import { Component } from '@angular/core';
+import { LoaderService } from '../../../core/services/loader.service';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'loader',
+  selector: 'app-loader',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './loader.component.html',
-  styleUrl: './loader.component.css',
+  styleUrls: ['./loader.component.css'],
 })
-export class Loader {
-  @Input() isLoading: boolean = false;
+export class LoaderComponent {
+  constructor(public loaderService: LoaderService) {}
 }

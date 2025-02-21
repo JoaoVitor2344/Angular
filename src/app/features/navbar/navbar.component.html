@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item" *ngFor="let route of routes">
-          <a class="nav-link" [routerLink]="route.path">
+          <a *ngIf="route.canActivate" class="nav-link" [routerLink]="route.path">
             {{ route.title }}
           </a>
         </li>

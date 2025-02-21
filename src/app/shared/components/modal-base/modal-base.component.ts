@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { showLoader } from '../../../core/utils/global-function';
+import { LoaderService } from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-modal-base',
@@ -21,7 +21,10 @@ export class ModalBaseComponent {
   }>;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(protected http: HttpClient) {}
+  constructor(
+    protected http: HttpClient,
+    private loaderService: LoaderService
+  ) {}
 
   submit() {
     const formData = this.inputs.reduce((acc, input) => {
@@ -31,11 +34,13 @@ export class ModalBaseComponent {
 
     this.onSubmit.emit(formData);
     this.closeModal();
-    showLoader();
+    this.loaderService.show();
   }
 
   closeModal() {
-    const modalElement = document.getElementById(this.id)?.querySelector(`[data-bs-dismiss="modal"]`);
+    const modalElement = document
+      .getElementById(this.id)
+      ?.querySelector(`[data-bs-dismiss="modal"]`);
 
     if (modalElement) {
       (modalElement as HTMLElement).click();

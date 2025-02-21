@@ -11,17 +11,16 @@ import { AuthService } from '../../core/services/auth.service';
   imports: [CommonModule, RouterModule],
 })
 export class Navbar {
-  routes = [
-    { path: '/home', title: 'Home' },
-    { path: '/users', title: 'Users' },
-  ];
+  routes: { path: string; title: string; canActivate: boolean }[] = [];
   user: User | undefined;
 
   constructor(private authService: AuthService, private router: Router) {
+    this.loadRoutes();
     this.loadUser();
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
+        this.loadRoutes();
         this.loadUser();
       }
     });
@@ -35,6 +34,16 @@ export class Navbar {
         this.user = userInfo;
       }
     }
+  }
+
+  private loadRoutes(): void {
+    this.routes = [
+      {
+        path: '/users',
+        title: 'Users',
+        canActivate: this.authService.isAuthenticated(),
+      },
+    ];
   }
 
   logout(): void {

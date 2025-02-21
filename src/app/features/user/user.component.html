@@ -1,6 +1,4 @@
-<loader [isLoading]="isLoading" />
-
-<ng-container *ngIf="!isLoading">
+<ng-container *ngIf="!(loaderService.isLoading$ | async)">
   <div class="d-flex justify-content-end mb-5">
     <button
       class="btn btn-sm rounded-pill btn-outline-primary align-middle px-3 fw-bold"
@@ -17,7 +15,13 @@
     (onSubmit)="onUserCreated($event)"
   ></app-create-user-modal>
 
-  <ng-container *ngIf="users.length > 0">
+  <ng-container *ngIf="users.length === 0; else usersList">
+    <div class="d-flex justify-content-center">
+      <p>Nenhum usuário cadastrado.</p>
+    </div>
+  </ng-container>
+
+  <ng-template #usersList>
     <table class="table">
       <thead>
         <tr>
@@ -61,11 +65,5 @@
         </tr>
       </tbody>
     </table>
-  </ng-container>
-
-  <ng-container *ngIf="users.length === 0">
-    <div class="d-flex justify-content-center">
-      <p>Nenhum usuário cadastrado.</p>
-    </div>
-  </ng-container>
+  </ng-template>
 </ng-container>

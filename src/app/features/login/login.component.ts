@@ -2,7 +2,8 @@ import { Component, ComponentFactoryResolver } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { hideLoader, showLoader } from '../../core/utils/global-function';
+import { LoaderService } from '../../core/services/loader.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -14,17 +15,30 @@ export class LoginComponent {
   email!: string;
   password!: string;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private loaderService: LoaderService
+  ) {}
 
   onSubmit() {
-    showLoader();
-
+    this.loaderService.show();
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        hideLoader();
         this.router.navigate(['/users']);
+        this.loaderService.hide();
       },
-      error: (err: { error: { message: any } }) => alert(err.error.message),
+      error: (err: { error: { message: any } }) => {
+        this.loaderService.hide();
+        Swal.fire({
+          icon: 'error',
+          title: 'Login',
+          text: 'E-mail ou senha inválidos',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      },
     });
   }
 
